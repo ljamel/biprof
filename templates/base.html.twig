@@ -10,8 +10,24 @@
         {% block javascripts %}
 {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
-    </head>
-    <body>
+            </head>
+            <body>
+                <header>
+                <nav>
+                    <ul><img class="logo" src="img/logo3.png" alt="biprof">
+                        <li><a href="/">ACCUEIL</a></li>
+                        <li><a href="#about">A PROPOS</a></li>
+                        {% if app.user %}
+                            <li><a href="{{ path('app_logout') }}">DECONNEXION</a></li>
+                        {% else %}
+                            <li><a href="{{ path('app_register') }}">INSCRIPTION</a></li>
+                            <li><a href="{{ path('app_login') }}">LOGIN</a></li>
+                        {% endif %}
+                        <li><a href="#contact">CONTACT</a></li>
+                    </ul>
+                </nav>
+            </header>
+
         {% block body %}{% endblock %}
     </body>
 </html>
