@@ -7,6 +7,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Profile;
+use App\Form\ProfileType;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -33,12 +37,33 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/membre', name: 'membre')]
-    public function membre(): Response
+    public function membre(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($this->getUser()) {
-            return $this->render('membre/membre.html.twig');
+
+            $profile = new Profile();
+            $form = $this->createForm(ProfileType::class, $profile);
+            $form->handleRequest($request);
+
+
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+          
+                // $profile->setCreatedAt(new DateTime());
+          
+                $entityManager->persist($profile);
+                $entityManager->flush();
+          
+                $this->addFlash('success', 'Profile correctement enregistrée !');
+             }
+
+            return $this->render('membre/membre.html.twig', [
+                'form' => $form->createView()
+              ]);
+              
         }else {
-            return $this->redirect('/');
+            return $this->redirect('/login');
         }
     }
 

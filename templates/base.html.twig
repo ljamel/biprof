@@ -18,6 +18,7 @@
                         <li><a href="/">ACCUEIL</a></li>
                         <li><a href="#about">A PROPOS</a></li>
                         {% if app.user %}
+                            <li><a href="{{ path('membre') }}">PROFILE</a></li>
                             <li><a href="{{ path('app_logout') }}">DECONNEXION</a></li>
                         {% else %}
                             <li><a href="{{ path('app_register') }}">INSCRIPTION</a></li>
@@ -28,6 +29,9 @@
                 </nav>
             </header>
 
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
         {% block body %}{% endblock %}
     </body>
 </html>

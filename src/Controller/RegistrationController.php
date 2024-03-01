@@ -32,6 +32,8 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        //dd($form->isValid());
+
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
@@ -40,6 +42,8 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+
+            $user->setProvider($form->get('Provider')->getData());
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -54,7 +58,10 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_index');
+            $this->addFlash('success', 'Merci pour votre inscription vous pouvez vous connectez');
+
+            return $this->redirectToRoute('membre');
+
         }
 
         return $this->render('registration/register.html.twig', [

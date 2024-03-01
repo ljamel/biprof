@@ -5,6 +5,13 @@
 {% block body %}
 
 
-    <h1> Bienvenue le bon prestataire !</h1>
+    <h1> Bienvenue cher prestataire !</h1>
+
+    {% for message in app.flashes('success') %}
+        <p>{{ message }}</p>
+    {% endfor %}
+
+    {{ form(form) }}
+
 
 {% endblock %}

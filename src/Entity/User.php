@@ -32,6 +32,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\OneToOne(mappedBy: 'profile', cascade: ['persist', 'remove'])]
+    private ?Profile $profile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $provider = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -113,4 +119,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function isProvider(): ?bool
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(?bool $provider): static
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getProfile(): ?Profile
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?Profile $profile): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($profile === null && $this->profile !== null) {
+            $this->profile->setProfile(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($profile !== null && $profile->getProfile() !== $this) {
+            $profile->setProfile($this);
+        }
+
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+
 }

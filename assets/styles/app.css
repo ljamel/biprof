@@ -61,7 +61,7 @@ footer {
     align-items: center;
 }
 
-input, select {
+input, select, button {
     width: 50%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -71,7 +71,7 @@ input, select {
     box-sizing: border-box;
 }
   
-.btn-primary {
+.btn-primary, button {
     width: 50%;
     background-color: #2079A2;
     color: white;
@@ -80,11 +80,17 @@ input, select {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
+}
   
-  .btn-primary:hover {
+.btn-primary, button:hover {
     background-color: #2079A2;
-  }
+}
+
+textarea#profile_about {
+    border-color: gray;
+    border-radius: 6px;
+    width: 50%;
+}
 
   @media screen and (max-width: 800px) {
 
@@ -95,4 +101,8 @@ input, select {
   .btn-primary {
     width: 100%;
   }
+  textarea#profile_about {
+    width: 100%;
+ } 
+
 }
