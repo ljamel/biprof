@@ -51,6 +51,8 @@ class DashboardController extends AbstractDashboardController
 
           
                 // $profile->setCreatedAt(new DateTime());
+
+                $profile->setCandidate($this->getUser());
           
                 $entityManager->persist($profile);
                 $entityManager->flush();

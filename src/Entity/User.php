@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -32,11 +34,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\OneToOne(mappedBy: 'profile', cascade: ['persist', 'remove'])]
-    private ?Profile $profile = null;
-
     #[ORM\Column(nullable: true)]
     private ?bool $provider = null;
+
+    public function __construct()
+    {
+        $this->profile = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -132,27 +136,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getProfile(): ?Profile
+    /**
+     * @return Collection<int, profile>
+     */
+    public function getProfile(): Collection
     {
         return $this->profile;
     }
 
-    public function setProfile(?Profile $profile): static
+    public function addProfile(profile $profile): static
     {
-        // unset the owning side of the relation if necessary
-        if ($profile === null && $this->profile !== null) {
-            $this->profile->setProfile(null);
+        if (!$this->profile->contains($profile)) {
+            $this->profile->add($profile);
+            $profile->setCandidate($this);
         }
-
-        // set the owning side of the relation if necessary
-        if ($profile !== null && $profile->getProfile() !== $this) {
-            $profile->setProfile($this);
-        }
-
-        $this->profile = $profile;
 
         return $this;
     }
 
+    public function removeProfile(profile $profile): static
+    {
+        if ($this->profile->removeElement($profile)) {
+            // set the owning side to null (unless already changed)
+            if ($profile->getCandidate() === $this) {
+                $profile->setCandidate(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bienvenue{% endblock %}
+{% block title %}Page membre{% endblock %}
 
 {% block body %}
 
 
-    <h1> Bienvenue cher prestataire !</h1>
+    <h1> Bienvenue !</h1>
+
+    <p> Completer votre profile </p>
 
     {% for message in app.flashes('success') %}
         <p>{{ message }}</p>

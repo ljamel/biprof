@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProfileRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,8 +25,17 @@ class Profile
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $about = null;
 
-    #[ORM\OneToOne(inversedBy: 'profile', cascade: ['persist', 'remove'])]
-    private ?User $profile = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nameEntreprise = null;
+
+    #[ORM\ManyToOne(inversedBy: 'profile')]
+    private ?User $candidate = null;
+
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+        $this->member = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -67,15 +78,28 @@ class Profile
         return $this;
     }
 
-    public function getProfile(): ?User
+    public function getCandidate(): ?User
     {
-        return $this->profile;
+        return $this->candidate;
     }
 
-    public function setProfile(?User $profile): static
+    public function setCandidate(?User $candidate): static
     {
-        $this->profile = $profile;
+        $this->candidate = $candidate;
 
         return $this;
     }
+
+    public function getNameEntreprise(): ?string
+    {
+        return $this->nameEntreprise;
+    }
+
+    public function setNameEntreprise(?string $nameEntreprise): static
+    {
+        $this->nameEntreprise = $nameEntreprise;
+
+        return $this;
+    }
+
 }
