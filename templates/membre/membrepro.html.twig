@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page membre{% endblock %}
+
+{% block body %}
+
+
+    <h1> Bienvenue !</h1>
+
+    <p> Voir la liste des candidats </p>
+
+    {{ dump(profileUsers) }}
+
+    {% for user in profileUsers %}
+        <ul>
+            <li>{{ user.email|e }}<a href="{{ path('app_profilepro', {'id': user.id}) }}">Voir le candidat</a></li>
+        </ul>
+    {% endfor %}
+
+
+{% endblock %}

@@ -37,6 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?bool $provider = null;
 
+
     public function __construct()
     {
         $this->profile = new ArrayCollection();

@@ -10,7 +10,7 @@
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
-{% block importmap %}{{ importmap('app') }}{% endblock %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
             </head>
             <body>
@@ -20,7 +20,12 @@
                         <li><a href="/">ACCUEIL</a></li>
                         <li><a href="#about">A PROPOS</a></li>
                         {% if app.user %}
-                            <li><a href="{{ path('membre') }}">PROFILE</a></li>
+                            {% if app.user.isProvider  %}
+                                <li><a href="{{ path('app_membrepro') }}">VOIR LES CANDIDATS</a></li>
+                                {% else %}
+                                <li><a href="{{ path('app_profile') }}">PROFILE</a></li>
+                            {% endif %}
+
                             <li><a href="{{ path('app_logout') }}">DECONNEXION</a></li>
                         {% else %}
                             <li><a href="{{ path('app_register') }}">INSCRIPTION</a></li>
@@ -33,6 +38,6 @@
 
             {# display any flash message #}    
 
-        {% block body %}  {% endblock %}
+            <div class="example-wrapper">{% block body %}  {% endblock %}</div>
     </body>
 </html>

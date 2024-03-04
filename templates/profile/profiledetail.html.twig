@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page membre{% endblock %}
+
+{% block body %}
+
+
+    <h1> Bienvenue !</h1>
+
+    <p>Votre candidat </p>
+
+    {{ dump(profileUsers) }}
+
+    {% for user in profileUsers %}
+        <ul>
+            <li>{{ user.speciality|e }}</li>
+        </ul>
+    {% endfor %}
+
+
+{% endblock %}

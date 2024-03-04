@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfileController!{% endblock %}
+
+{% block body %}
+
+    <h1>Exeprience</h1>
+
+    <a href="{{ path('membre') }}"> Ajouter un experience </a>
+
+    {% for user in profileUsers %}
+        <ul>
+            <li>{{ user.about|e }}</li>
+            <li>{{ user.speciality|e }}</li>
+            <li>{{ user.years|e }}</li>
+            <li>{{ user.about|e }}</li>
+        </ul>
+    {% endfor %}
+
+{% endblock %}
