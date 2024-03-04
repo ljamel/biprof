@@ -11,9 +11,10 @@
 
     {{ dump(profileUsers) }}
 
+    <a href=mailto:"{{profileUsers|first.candidate.email}}"> Contacter le candidat par mail</a>
     {% for user in profileUsers %}
         <ul>
-            <li>{{ user.speciality|e }}</li>
+            <li>{{ user.speciality|e }} </li>
         </ul>
     {% endfor %}
 

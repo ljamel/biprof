@@ -13,7 +13,7 @@
 
     {% for user in profileUsers %}
         <ul>
-            <li>{{ user.email|e }}<a href="{{ path('app_profilepro', {'id': user.id}) }}">Voir le candidat</a></li>
+            <li>{{ user.speciality|e }}, experience {{ user.exp|e }} annees<a href="{{ path('app_profilepro', {'id': user.candidate_id}) }}">Voir le candidat</a></li>
         </ul>
     {% endfor %}
 

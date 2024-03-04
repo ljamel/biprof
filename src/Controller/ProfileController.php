@@ -68,13 +68,19 @@ class ProfileController extends AbstractController
             return $this->redirect('/');
         }
 
-        $profile_user = $entityManager->getRepository(User::class)->findBy(
-            ['provider' => 0],
-            ['id' => 'ASC']
-        );
+
+        $conn = $entityManager->getConnection();
+        $sql = '
+        SELECT *, sum(profile.years) as exp FROM user as p INNER JOIN profile ON p.id = profile.candidate_id 
+        WHERE p.provider = 0
+        GROUP BY p.id
+        ORDER BY profile.id DESC
+        ';
+
+        $profile_user = $conn->executeQuery($sql, ['provider' => 0]);
 
         return $this->render('membre/membrepro.html.twig', [
-            'profileUsers' => $profile_user,
+            'profileUsers' => $profile_user->fetchAllAssociative(),
         ]);
     }
 
