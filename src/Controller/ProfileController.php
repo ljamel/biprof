@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Profile;
 use App\Entity\User;
+use App\Entity\Dispo;
 use App\Form\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,6 +25,7 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/index.html.twig', [
             'profileUsers' => $profile_user,
+            'dispos'    => $this->getUser()->getDispos(),
         ]);
     }
 
@@ -79,7 +81,7 @@ class ProfileController extends AbstractController
 
         $profile_user = $conn->executeQuery($sql, ['provider' => 0]);
 
-        return $this->render('membre/membrepro.html.twig', [
+        return $this->render('pro/membrepro.html.twig', [
             'profileUsers' => $profile_user->fetchAllAssociative(),
         ]);
     }
@@ -97,8 +99,39 @@ class ProfileController extends AbstractController
             ['id' => 'ASC']
         );
 
-        return $this->render('profile/profiledetail.html.twig', [
+        return $this->render('pro/profiledetail.html.twig', [
             'profileUsers' => $profile_user,
         ]);
     }
+
+    #[Route('/fc-load-events', name: 'fc-load-events')]
+    public function events(EntityManagerInterface $entityManager, Request $request): Response
+    {
+
+        if(!$this->getUser()){
+            return $this->redirect('/');
+        }
+
+        $dispo = new Dispo();
+        $dispDate = new \DateTime($request->getContent());
+        $dispo->setDispo($dispDate);
+
+        $dispo_user = $entityManager->getRepository(Dispo::class)->findOneByDispo($dispDate);
+        if($dispo_user){
+            $this->getUser()->removeDispo($dispo_user);
+            $dispo->removeUser($this->getUser());
+        }
+
+        $dispo->addUser($this->getUser());
+
+
+        // $dispoUser = $this->getUser()->addDispo($dispDate);
+    
+        $entityManager->persist($dispo);
+        $entityManager->flush();
+    
+        
+        throw new \LogicException('Just add dispo.');
+    }
+
 }

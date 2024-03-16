@@ -7,13 +7,12 @@
 
     <h1> Bienvenue !</h1>
 
-    <p> Completer votre profile </p>
+    <h2> Completer votre profile </h2>
 
     {% for message in app.flashes('success') %}
         <p>{{ message }}</p>
     {% endfor %}
 
     {{ form(form) }}
-
 
 {% endblock %}

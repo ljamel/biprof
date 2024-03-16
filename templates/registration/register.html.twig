@@ -11,12 +11,11 @@
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.password, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.Provider) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {{ form_widget(registrationForm.email, {'attr': {'placeholder': 'Email'}}) }}
+        {{ form_widget(registrationForm.tel, {'attr': {'type': 'tel','placeholder': 'Tel'}}) }}
+        {{ form_widget(registrationForm.password,{'attr': {'placeholder': 'Mot de passe'}}) }}
+        {{ form_widget(registrationForm.Provider, {value: app.request.get('provider') } ) }}
+        {{ form_widget(registrationForm.agreeTerms, {'attr': {'label': 'Terme'}}) }}
 
         <button type="submit" class="btn">S'enregistrer</button>
     {{ form_end(registrationForm) }}

@@ -17,4 +17,57 @@
         </ul>
     {% endfor %}
 
+    <h2>Vos disponibilites</h2>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script>
+
+
+   document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    selectable: true,
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    events: [
+       {% for dispo in dispos %}
+        {
+            title: 'All Day Event',
+            start: '{{ dispo.dispo|date("Y-m-d") }}',
+        },
+       {% endfor %}
+      {
+        title: 'Click for Google',
+        url: 'https://google.com/',
+        start: '2024-02-28'
+      }
+    ],
+    dateClick: function(info) {
+       alert('clicked ' + info.dateStr);
+
+        // send post
+        const url = "fc-load-events"
+        let xhr = new XMLHttpRequest()
+        xhr.open('POST', url, true)
+        xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8')
+        xhr.send(info.dateStr);
+        xhr.onload = function () {
+
+        // event
+
+        }
+
+    }
+
+  });
+
+  calendar.render();
+});
+
+    </script>
+    <div id='calendar'></div>
+
 {% endblock %}

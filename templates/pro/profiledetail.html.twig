@@ -14,7 +14,9 @@
     <a href=mailto:"{{profileUsers|first.candidate.email}}"> Contacter le candidat par mail</a>
     {% for user in profileUsers %}
         <ul>
-            <li>{{ user.speciality|e }} </li>
+            <li>Poste: {{ user.speciality|e }} </li>
+            <li>annees d'experience: {{ user.years|e }} </li>
+            <li>Description: {{ user.about|e }} </li>
         </ul>
     {% endfor %}
 

@@ -37,10 +37,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?bool $provider = null;
 
+    #[ORM\Column(length: 60, nullable: true)]
+    private ?string $tel = null;
+
+    #[ORM\ManyToMany(targetEntity: Dispo::class, mappedBy: 'user')]
+    private Collection $dispos;
+
 
     public function __construct()
     {
         $this->profile = new ArrayCollection();
+        $this->dispos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,6 +169,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($profile->getCandidate() === $this) {
                 $profile->setCandidate(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+
+    public function setTel(?string $tel): static
+    {
+        $this->tel = $tel;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Dispo>
+     */
+    public function getDispos(): Collection
+    {
+        return $this->dispos;
+    }
+
+    public function addDispo(Dispo $dispo): static
+    {
+        if (!$this->dispos->contains($dispo)) {
+            $this->dispos->add($dispo);
+            $dispo->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDispo(Dispo $dispo): static
+    {
+        if ($this->dispos->removeElement($dispo)) {
+            $dispo->removeUser($this);
         }
 
         return $this;
